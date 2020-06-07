@@ -2,7 +2,6 @@ from houdini import handlers
 from houdini.handlers import XTPacket
 from houdini.plugins import IPlugin
 import time
-import psutil
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from googleapiclient import discovery
