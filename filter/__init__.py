@@ -56,7 +56,8 @@ class SwearFilter(IPlugin):
 
     @handlers.handler(XTPacket('m', 'sm'))
     async def handle_send_message(self, p, penguin_id: int, message: str):
-        toxic = self.Toxicity(message)
+        loop = asyncio.get_running_loop()
+        toxic = loop.run_in_executor(None,self.Toxicity(message))
         if toxic > 60:
             await p.room.send_xt('mm', message, p.id, f=lambda px: px.moderator)
             await moderator_ban(p, p.id, comment='Inappropriate language', message=message)
