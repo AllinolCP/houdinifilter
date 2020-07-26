@@ -61,9 +61,10 @@ class SwearFilter(IPlugin):
         if toxic > 60:
             await p.room.send_xt('mm', message, p.id, f=lambda px: px.moderator)
             await moderator_ban(p, p.id, comment='Inappropriate language', message=message)
-            await moderator_kick(p, p.id)
+            await p.close()
         if toxic > 90:
             await moderator_ban(p, p.id, comment='Inappropriate language', message=message)
+            await p.close()
         elif toxic > 80:
             # Kick'em 
             await moderator_kick(p, p.id)
