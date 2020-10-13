@@ -2,6 +2,7 @@ from houdini import handlers
 from houdini.handlers import XTPacket
 from houdini.plugins import IPlugin
 import asyncio
+import aiohttp
 from houdini.handlers.play.moderation import moderator_ban,moderator_kick
 PERSPECTIVE_API_KEY = 'yourkey' # Get yourself a key from google.
 TOXICITY_FILTER = 60 # filter texts with toxicity more than 60%
