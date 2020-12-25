@@ -21,7 +21,7 @@ class SwearFilter(IPlugin):
     async def ready(self):
         self.server.logger.info('PerspectiveAPI Filter Ready!')
         
-    async def Toxicity(self, message):
+    async def get_toxicity(self, message):
         if not API_ACTIVE:
             self.server.logger.info("Perspective API not active. Message not filtered.")
             return 0
@@ -37,21 +37,18 @@ class SwearFilter(IPlugin):
               'languages': 'en' #english is the default language you can change this to french(fr), spanish(es), german(de) , portuguese(pt) and italy(it)
             }
             async with aiohttp.ClientSession() as session:
-              async with session.post(f 'https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key={PERSPECTIVE_API_KEY}', json = analyze_request) as resp:
+              async with session.post(f'https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key={PERSPECTIVE_API_KEY}', json = analyze_request) as resp:
                 response = await resp.json()
                 toxicity = round(100 * float(response['attributeScores'][TOXIC_FILTER]['summaryScore']['value']))
 
-                self.server.logger.info(f " Toxicity {toxicity}. Message {message}")
+                self.server.logger.info(f'Toxicity {toxicity}. Message {message}')
 
                 return toxicity
 
         except Exception as e:
             self.server.logger.info(f'Error, {e}')
             self.server.logger.info("Unable to filter message via Perspective API. Message not filtered.")
-
             return 0
-
-
 
     @handlers.handler(XTPacket('m', 'sm'))
     async def handle_send_message(self, p, penguin_id: int, message: str):
